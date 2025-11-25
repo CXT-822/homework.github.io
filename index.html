@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<!-- 声明文档类型为HTML5，告知浏览器以HTML5标准解析页面 -->
+<html lang="zh-CN">
+<head>
+    <!-- 设置页面字符编码为UTF-8，确保中文等字符正常显示 -->
+    <meta charset="UTF-8">
+    <!-- 响应式配置：页面宽度等于设备宽度，初始缩放比例1.0，适配各种设备屏幕 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 页面标题：显示在浏览器标签页，同时用于搜索引擎索引 -->
+    <title>小兔鲜儿-新鲜·亲民·快捷</title>
+    
+    <!-- 引入Tailwind CSS框架（CDN方式），用于快速构建页面样式 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入Font Awesome图标库（4.7.0版本），用于显示各类图标 -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    
+    <!-- 自定义Tailwind CSS主题配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    // 扩展自定义颜色配置，可在页面中通过类名直接使用（如text-primary）
+                    colors: {
+                        primary: '#2ecc71',     // 主色调（绿色）
+                        secondary: '#e74c3c',   // 辅助色（红色）
+                        dark: '#333333',        // 深色（用于文字等）
+                        light: '#f5f5f5',       // 浅色（用于背景等）
+                        sidebar: '#444444'      // 侧边栏专用颜色
+                    },
+                    // 扩展字体配置，优先使用微软雅黑，确保中文显示美观
+                    fontFamily: {
+                        sans: ['Microsoft YaHei', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            /* 自定义工具类：控制内容可见性，提升性能 */
+            .content-auto {
+                content-visibility: auto;
+            }
+            /* 商品卡片基础样式：设置过渡效果 */
+            .goods-card {
+                transition: all 0.3s ease;
+            }
+            /* 商品卡片 hover 效果：上移并添加阴影 */
+            .goods-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            }
+            /* 区块标题样式：应用 Tailwind 类组合，实现大字号、加粗、底部边框等效果 */
+            .section-title {
+                @apply text-2xl font-bold text-dark border-b-2 border-primary pb-2 mb-6;
+            }
+            /* 区块子标题样式：应用 Tailwind 类，设置文字颜色和左边距 */
+            .section-subtitle {
+                @apply text-gray-500 ml-4;
+            }
+            /* 侧边栏链接样式：应用 Tailwind 类，设置文字颜色、 hover 效果、显示方式和内边距 */
+            .sidebar-link {
+                @apply text-white hover:text-primary transition-colors block py-2;
+            }
+            /* 侧边栏分类标题样式：应用 Tailwind 类，设置文字颜色、字体粗细和下边距 */
+            .sidebar-category {
+                @apply text-white font-medium mb-2;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- 顶部导航 -->
+    <div class="bg-dark text-white h-10 flex items-center justify-end px-6">
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">请先登录</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">免费注册</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">我的订单</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">会员中心</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">帮助中心</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">在线客服</a>
+        <a href="#" class="text-sm mx-3 hover:text-primary transition-colors">手机版</a>
+    </div>
+
+    <!-- 头部Logo和导航 -->
+    <div class="bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-3 flex items-center">
+            <img src="img/LOGO.PNG" alt="小兔鲜儿Logo" class="w-28 h-12 object-contain">
+            <div class="ml-10">
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">首页</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">生鲜</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">美食</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">餐厨</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">电器</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">家居</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">洗护</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">孕婴</a>
+                <a href="#" class="inline-block px-4 py-2 text-dark font-medium hover:text-primary transition-colors">服装</a>
+            </div>
+            <div class="ml-auto flex items-center">
+                <div class="relative">
+                    <input type="text" placeholder="搜一搜..." class="w-64 h-9 pl-4 pr-10 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary">
+                    <button class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-primary transition-colors">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+                <div class="ml-6 text-xl cursor-pointer relative hover:text-primary transition-colors">
+                    <i class="fa fa-shopping-cart"></i>
+                    <span class="absolute -top-2 -right-2 bg-secondary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主内容区（含侧边栏） -->
+    <div class="flex">
+        <!-- 侧边栏 -->
+        <div class="w-64 bg-sidebar text-white h-[calc(100vh-110px)] overflow-y-auto">
+            <div class="p-4">
+                <div class="sidebar-category">生鲜果蔬</div>
+                <a href="#" class="sidebar-link">水果</a>
+                <a href="#" class="sidebar-link">蔬菜</a>
+                
+                <div class="sidebar-category mt-4">美食推荐</div>
+                <a href="#" class="sidebar-link">面包</a>
+                <a href="#" class="sidebar-link">干果</a>
+                
+                <div class="sidebar-category mt-4">数码电子</div>
+                <a href="#" class="sidebar-link">手机</a>
+                <a href="#" class="sidebar-link">电脑</a>
+                
+                <div class="sidebar-category mt-4">家庭电器</div>
+                <a href="#" class="sidebar-link">电视</a>
+                <a href="#" class="sidebar-link">冰箱</a>
+                
+                <div class="sidebar-category mt-4">厨房用品</div>
+                <a href="#" class="sidebar-link">厨房电器</a>
+                <a href="#" class="sidebar-link">餐具</a>
+                
+                <div class="sidebar-category mt-4">居家生活</div>
+                <a href="#" class="sidebar-link">床品</a>
+                <a href="#" class="sidebar-link">四件套</a>
+                <a href="#" class="sidebar-link">被枕</a>
+                
+                <div class="sidebar-category mt-4">洗护美妆</div>
+                <a href="#" class="sidebar-link">洗发</a>
+                <a href="#" class="sidebar-link">洁面</a>
+                <a href="#" class="sidebar-link">美妆</a>
+                
+                <div class="sidebar-category mt-4">孕婴用品</div>
+                <a href="#" class="sidebar-link">奶粉</a>
+                <a href="#" class="sidebar-link">玩具</a>
+                <a href="#" class="sidebar-link">服装</a>
+                
+                <div class="sidebar-category mt-4">服饰穿搭</div>
+                <a href="#" class="sidebar-link">女装</a>
+                <a href="#" class="sidebar-link">男装</a>
+                
+                <div class="sidebar-category mt-4">日用杂货</div>
+                <a href="#" class="sidebar-link">户外</a>
+                <a href="#" class="sidebar-link">图书</a>
+            </div>
+        </div>
+
+        <!-- 右侧内容区 -->
+        <div class="flex-1 p-6">
+            <!-- 轮播图 -->
+            <div class="rounded-lg overflow-hidden mb-8 shadow-md">
+                <img src="img/banner1.png" alt="魅力早春新品上市" class="w-full h-[400px] object-cover">
+            </div>
+
+            <!-- 新鲜好物 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">新鲜好物</h2>
+                    <p class="section-subtitle">新鲜出炉 品质靠谱</p>
+                    <a href="#" class="ml-auto text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/goods1.png" alt="KN95级莫兰迪色防护口罩" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">KN95级莫兰迪色防护口罩</h4>
+                            <p class="text-secondary font-bold">¥79</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/goods2.png" alt="紫檀外独板三层普洱茶盒" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">紫檀外独板三层普洱茶盒</h4>
+                            <p class="text-secondary font-bold">¥566</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/goods3.png" alt="法拉蒙高颜值记事本可定制" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">法拉蒙高颜值记事本可定制</h4>
+                            <p class="text-secondary font-bold">¥58</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/goods4.png" alt="科技布布艺沙发" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">科技布布艺沙发</h4>
+                            <p class="text-secondary font-bold">¥3579</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 人气推荐 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">人气推荐</h2>
+                    <p class="section-subtitle">人气爆款 不容错过</p>
+                    <a href="#" class="ml-auto text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                </div>
+                <div class="grid grid-cols-4 gap-4">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/recommend1.png" alt="特惠推荐" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">特惠推荐</h4>
+                            <p class="text-gray-500 text-sm">我猜得到 你的需要</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/recommend2.png" alt="爆款推荐" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">爆款推荐</h4>
+                            <p class="text-gray-500 text-sm">人气好物推荐</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/recommend3.png" alt="节日礼品一站买全" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">节日礼品一站买全</h4>
+                            <p class="text-gray-500 text-sm">编辑尽心整理推荐</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/recommend4.png" alt="鲜花园艺" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-1">鲜花园艺</h4>
+                            <p class="text-gray-500 text-sm">给生活增加仪式感</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 热门品牌 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">热门品牌</h2>
+                    <p class="section-subtitle">国际经典 品质认证</p>
+                    <div class="ml-auto flex space-x-2">
+                        <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
+                            <i class="fa fa-angle-left text-xs"></i>
+                        </button>
+                        <button class="w-8 h-8 rounded-full border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
+                            <i class="fa fa-angle-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="#" class="bg-white rounded-b-lg overflow-hidden goods-card">
+                        <img src="img/hot1.png" alt="edition 大牌直降5折起" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <p class="text-dark font-medium">edition</p>
+                            <p class="text-red-500 text-sm">大牌直降5折起</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-b-lg overflow-hidden goods-card">
+                        <img src="img/hot2.png" alt="inman 夏季爆款钜惠" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <p class="text-dark font-medium">inman</p>
+                            <p class="text-red-500 text-sm">夏季爆款钜惠</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-b-lg overflow-hidden goods-card">
+                        <img src="img/hot3.png" alt="PEACEBIRD MEN 全场1件7.5折" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <p class="text-dark font-medium">PEACEBIRD MEN</p>
+                            <p class="text-red-500 text-sm">全场1件7.5折</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-b-lg overflow-hidden goods-card">
+                        <img src="img/hot4.png" alt="ONLY 2件8折 3件7折" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <p class="text-dark font-medium">ONLY</p>
+                            <p class="text-red-500 text-sm">2件8折 3件7折</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-b-lg overflow-hidden goods-card">
+                        <img src="img/hot5.png" alt="OSA欧莎 到手低至5.5折" class="w-full h-48 object-cover">
+                        <div class="p-2 text-center">
+                            <p class="text-dark font-medium">OSA欧莎</p>
+                            <p class="text-red-500 text-sm">到手低至5.5折</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 生鲜专区 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">生鲜</h2>
+                    <div class="ml-auto flex space-x-4">
+                        <a href="#" class="text-dark hover:text-primary transition-colors">热门</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">蔬菜</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">肉禽蛋</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">水果</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">海鲜</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">零食</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">饮料</a>
+                        <a href="#" class="ml-2 text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh1.png" alt="双味千层手抓饼" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">双味千层，手抓饼烤肉组合240g/袋 4片装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥89.99</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh2.png" alt="红糖馒头" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">云南甘蔗慢熬红糖馒头220g/袋 5个装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥9.99</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh3.png" alt="日式小圆饼" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">日式风味小圆饼圆形【海盐味】</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥5.88</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh4.png" alt="全麦小面包" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">全麦奶油浓香小面包50g*12袋</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥69.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh5.png" alt="五福摩提大福" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">秘制外皮五福摩提大福点心150g/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥29.90</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh6.png" alt="蜂蜜柚子茶" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">水果面膜韩国蜂蜜柚子茶560g/瓶</h4>
+                            <p class="text-xs text-gray-500">冲调饮品</p>
+                            <p class="text-secondary font-bold mt-1">¥79.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh7.png" alt="巧克力礼盒" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">浓情比利时巧克力礼盒装205克/盒</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥28.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/fresh8.png" alt="抹茶小蛋糕" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">抹茶奶油小蛋糕礼盒装220克/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥39.00</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 服装专区 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">服装</h2>
+                    <div class="ml-auto flex space-x-4">
+                        <a href="#" class="text-dark hover:text-primary transition-colors">热门</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">女装</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">奢侈品</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">裤装</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">衬衫</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">T恤</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">内衣</a>
+                        <a href="#" class="ml-2 text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes1.png" alt="休闲运动鞋" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">双味千层，手抓饼烤肉组合240g/袋 4片装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥719.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes2.png" alt="紫色蝴蝶结上衣" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">云南甘蔗慢熬红糖馒头220g/袋 5个装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥699.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes3.png" alt="酒红色针织衫" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">日式风味小圆饼圆形【海盐味】</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥229.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes4.png" alt="水果图案袜子" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">全麦奶油浓香小面包50g*12袋</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥14.50</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes5.png" alt="黑色连衣裙" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">秘制外皮五福摩提大福点心150g/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥259.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes6.png" alt="棕色皮带" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">水果面膜韩国蜂蜜柚子茶560g/瓶</h4>
+                            <p class="text-xs text-gray-500">冲调饮品</p>
+                            <p class="text-secondary font-bold mt-1">¥89.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes7.png" alt="卡通帆布鞋" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">浓情比利时巧克力礼盒装205克/盒</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥79.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/clothes8.png" alt="三色休闲裤" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">抹茶奶油小蛋糕礼盒装220克/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥129.00</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 餐厨专区 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">餐厨</h2>
+                    <div class="ml-auto flex space-x-4">
+                        <a href="#" class="text-dark hover:text-primary transition-colors">热门</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">厨具</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">水具</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">灯具</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">五金</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">家装材料</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">居家毫无</a>
+                        <a href="#" class="ml-2 text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen1.png" alt="禅意茶具" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">双味千层，手抓饼烤肉组合240g/袋 4片装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥210.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen2.png" alt="水果篮" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">云南甘蔗慢熬红糖馒头220g/袋 5个装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥32.99</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen3.png" alt="手持搅拌器" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">日式风味小圆饼圆形【海盐味】</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥30.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen4.png" alt="保温壶" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">全麦奶油浓香小面包50g*12袋</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥69.99</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen5.png" alt="创意餐具" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">秘制外皮五福摩提大福点心150g/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥59.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen6.png" alt="蛋糕模具" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">水果面膜韩国蜂蜜柚子茶560g/瓶</h4>
+                            <p class="text-xs text-gray-500">冲调饮品</p>
+                            <p class="text-secondary font-bold mt-1">¥29.90</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen7.png" alt="日式托盘" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">浓情比利时巧克力礼盒装205克/盒</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥39.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/kitchen8.png" alt="便携保温杯" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">抹茶奶油小蛋糕礼盒装220克/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥89.00</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 居家专区 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">居家</h2>
+                    <div class="ml-auto flex space-x-4">
+                        <a href="#" class="text-dark hover:text-primary transition-colors">热门</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">鲜花生活</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">家纺</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">创意礼品</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">个人佩饰</a>
+                        <a href="#" class="text-dark hover:text-primary transition-colors">生活日用</a>
+                        <a href="#" class="ml-2 text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                    </div>
+                </div>
+                <div class="grid grid-cols-5 gap-2">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home1.png" alt="床品四件套" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">双味千层，手抓饼烤肉组合240g/袋 4片装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥59.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home2.png" alt="恐龙玩偶" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">云南甘蔗慢熬红糖馒头220g/袋 5个装</h4>
+                            <p class="text-xs text-gray-500">加热即食</p>
+                            <p class="text-secondary font-bold mt-1">¥39.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home3.png" alt="水培绿植" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">日式风味小圆饼圆形【海盐味】</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥19.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home4.png" alt="发饰套装" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">全麦奶油浓香小面包50g*12袋</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥29.90</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home5.png" alt="玫瑰鲜花" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">秘制外皮五福摩提大福点心150g/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥29.90</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home6.png" alt="折叠桌" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">水果面膜韩国蜂蜜柚子茶560g/瓶</h4>
+                            <p class="text-xs text-gray-500">冲调饮品</p>
+                            <p class="text-secondary font-bold mt-1">¥79.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home7.png" alt="水培植物" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">浓情比利时巧克力礼盒装205克/盒</h4>
+                            <p class="text-xs text-gray-500">糖果零食</p>
+                            <p class="text-secondary font-bold mt-1">¥28.00</p>
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/home8.png" alt="凉席套装" class="w-full h-48 object-cover">
+                        <div class="p-2">
+                            <h4 class="font-medium text-dark mb-1 line-clamp-2">抹茶奶油小蛋糕礼盒装220克/盒</h4>
+                            <p class="text-xs text-gray-500">美味西点</p>
+                            <p class="text-secondary font-bold mt-1">¥39.00</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 最新专题 -->
+            <div class="mb-12">
+                <div class="flex items-center mb-6">
+                    <h2 class="section-title">最新专题</h2>
+                    <a href="#" class="ml-auto text-gray-500 hover:text-primary transition-colors">查看全部 <i class="fa fa-angle-right ml-1"></i></a>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/topic1.png" alt="麻辣花螺专题" class="w-full h-48 object-cover">
+                        <div class="p-2 flex justify-between items-center text-sm text-gray-500">
+                            <i class="fa fa-heart"></i> 1220
+                            <i class="fa fa-eye"></i> 1800
+                            <i class="fa fa-comment"></i> 246
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/topic2.png" alt="橙子饮品专题" class="w-full h-48 object-cover">
+                        <div class="p-2 flex justify-between items-center text-sm text-gray-500">
+                            <i class="fa fa-heart"></i> 1220
+                            <i class="fa fa-eye"></i> 1800
+                            <i class="fa fa-comment"></i> 246
+                        </div>
+                    </a>
+                    <a href="#" class="bg-white rounded-lg overflow-hidden goods-card">
+                        <img src="img/topic3.png" alt="冰淇淋专题" class="w-full h-48 object-cover">
+                        <div class="p-2 flex justify-between items-center text-sm text-gray-500">
+                            <i class="fa fa-heart"></i> 1220
+                            <i class="fa fa-eye"></i> 1800
+                            <i class="fa fa-comment"></i> 246
+                        </div>
+                    </a>
+                </div>
+                <div class="grid grid-cols-4 gap-4 mt-6">
+                    <div class="flex flex-col items-center p-4 bg-light rounded-lg">
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+                            <i class="fa fa-yen text-primary"></i>
+                        </div>
+                        <h4 class="font-medium text-dark">价格亲民</h4>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-light rounded-lg">
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+                            <i class="fa fa-truck text-primary"></i>
+                        </div>
+                        <h4 class="font-medium text-dark">物流快捷</h4>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-light rounded-lg">
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+                            <i class="fa fa-shield text-primary"></i>
+                        </div>
+                        <h4 class="font-medium text-dark">品质新鲜</h4>
+                    </div>
+                    <div class="flex flex-col items-center p-4 bg-light rounded-lg">
+                        <div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+                            <i class="fa fa-refresh text-primary"></i>
+                        </div>
+                        <h4 class="font-medium text-dark">售后无忧</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 页脚 -->
+            <div class="bg-dark text-white py-10 mt-12">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-4 gap-8 mb-8">
+                        <div>
+                            <h3 class="text-lg font-bold mb-4">关于我们</h3>
+                            <p class="text-gray-400 text-sm">小兔鲜儿是一家专注于提供新鲜、优质商品的线上超市，我们致力于为消费者提供最便捷的购物体验。</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold mb-4">客户服务</h3>
+                            <ul class="text-gray-400 text-sm space-y-2">
+                                <li><a href="#" class="hover:text-primary transition-colors">帮助中心</a></li>
+                                <li><a href="#" class="hover:text-primary transition-colors">售后服务</a></li>
+                                <li><a href="#" class="hover:text-primary transition-colors">联系我们</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold mb-4">支付方式</h3>
+                            <img src="img/app.png">
+                        <div>
+                            <h3 class="text-lg font-bold mb-4">关注我们</h3>
+                            <div class="flex space-x-4 text-xl">
+                                <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-weixin"></i></a>
+                                <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-weibo"></i></a>
+                                <a href="#" class="hover:text-primary transition-colors"><i class="fa fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 pt-6 text-center text-gray-400">
+                        <p>25216950508 陈轩彤</p>
+                        <p class="text-xs mt-2">© 2023 小兔鲜儿 版权所有</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 交互脚本 -->
+    <script>
+        // 平滑滚动效果
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId !== '#') {
+                    document.querySelector(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // 图片加载错误处理
+        document.querySelectorAll('img').forEach(img => {
+            img.addEventListener('error', function() {
+                this.src = `https://via.placeholder.com/${this.width}x${this.height}/f0f0f0/999?text=图片`;
+            });
+        });
+    </script>
+</body>
+</html>
